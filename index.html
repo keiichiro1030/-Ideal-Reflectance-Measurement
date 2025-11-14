@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="">
+<meta name="dcterms.date" content="2025-11-14">
+
+<title>積分球を用いた分光反射率測定 – 理想的な反射率測定方法</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">理想的な反射率測定方法</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#はじめに" id="toc-はじめに" class="nav-link active" data-scroll-target="#はじめに">はじめに</a></li>
+  <li><a href="#積分球integrating-sphereの原理" id="toc-積分球integrating-sphereの原理" class="nav-link" data-scroll-target="#積分球integrating-sphereの原理">1. 積分球（Integrating Sphere）の原理</a>
+  <ul class="collapse">
+  <li><a href="#なぜ積分球が必要なのか" id="toc-なぜ積分球が必要なのか" class="nav-link" data-scroll-target="#なぜ積分球が必要なのか">1.1 なぜ積分球が必要なのか</a></li>
+  </ul></li>
+  <li><a href="#測定構成と方式" id="toc-測定構成と方式" class="nav-link" data-scroll-target="#測定構成と方式">2. 測定構成と方式</a>
+  <ul class="collapse">
+  <li><a href="#d8-方式拡散入射8-受光" id="toc-d8-方式拡散入射8-受光" class="nav-link" data-scroll-target="#d8-方式拡散入射8-受光">2.1 d/8° 方式（拡散入射・8° 受光）</a></li>
+  <li><a href="#正反射成分specular-componentの扱い" id="toc-正反射成分specular-componentの扱い" class="nav-link" data-scroll-target="#正反射成分specular-componentの扱い">2.2 正反射成分（Specular Component）の扱い</a></li>
+  </ul></li>
+  <li><a href="#測定手順" id="toc-測定手順" class="nav-link" data-scroll-target="#測定手順">3. 測定手順</a>
+  <ul class="collapse">
+  <li><a href="#step-1標準白板測定" id="toc-step-1標準白板測定" class="nav-link" data-scroll-target="#step-1標準白板測定">3.1 Step 1：標準白板測定</a></li>
+  <li><a href="#step-2試料測定" id="toc-step-2試料測定" class="nav-link" data-scroll-target="#step-2試料測定">3.2 Step 2：試料測定</a></li>
+  <li><a href="#step-3白板値による正規化" id="toc-step-3白板値による正規化" class="nav-link" data-scroll-target="#step-3白板値による正規化">3.3 Step 3：白板値による正規化</a></li>
+  <li><a href="#step-4可視反射率への統合" id="toc-step-4可視反射率への統合" class="nav-link" data-scroll-target="#step-4可視反射率への統合">3.4 Step 4：可視反射率への統合</a></li>
+  </ul></li>
+  <li><a href="#測定時の注意点" id="toc-測定時の注意点" class="nav-link" data-scroll-target="#測定時の注意点">4. 測定時の注意点</a></li>
+  <li><a href="#まとめ積分球測定の優位性" id="toc-まとめ積分球測定の優位性" class="nav-link" data-scroll-target="#まとめ積分球測定の優位性">5. まとめ：積分球測定の優位性</a>
+  <ul class="collapse">
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献">参考文献</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">積分球を用いた分光反射率測定</h1>
+<p class="subtitle lead">照明工学・室内環境評価のための標準測定法</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 14, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="はじめに" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="はじめに">はじめに</h2>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>TL;DR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>積分球測定は、光を均一に拡散する球内で試料の反射光を総合的に測定する方式です。この方法により、壁や天井などの拡散面の反射率を<strong>方向性に依らず正確に測定</strong>できます。精度・再現性・安全性において最も信頼性の高い標準測定法です。</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="積分球integrating-sphereの原理" class="level1">
+<h1>1. 積分球（Integrating Sphere）の原理</h1>
+<section id="なぜ積分球が必要なのか" class="level2">
+<h2 class="anchored" data-anchor-id="なぜ積分球が必要なのか">1.1 なぜ積分球が必要なのか</h2>
+<p>壁や天井のような拡散反射面は、入射光を<strong>全方向</strong>に散乱させます。この全方向反射光を正確に捕捉しない限り、真の反射率を求めることはできません。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>従来手法の課題
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>通常のカメラやセンサーは特定方向からの測定に限定される</li>
+<li>測定角度により値が大きく変動する</li>
+<li>表面の微小な凹凸や光沢の影響を分離できない</li>
+</ul>
+</div>
+</div>
+<p>積分球は内面が高反射率コーティング（反射率 ≥ 0.95）で覆われており、内部で光を繰り返し反射させることで<strong>均一な光分布</strong>を実現します。</p>
+<div id="cell-fig-integrating-sphere" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-integrating-sphere" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-integrating-sphere-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-integrating-sphere-output-1.png" width="758" height="758" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-integrating-sphere-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: 積分球の概念図
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>積分球の特性
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>積分球内では、光源の入射方向、試料表面の光沢、微小な凹凸による散乱方向の違いが全て<strong>平均化</strong>されます。これにより<strong>方向に依存しない真の反射率</strong>が測定可能になります。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="測定構成と方式" class="level1">
+<h1>2. 測定構成と方式</h1>
+<section id="d8-方式拡散入射8-受光" class="level2">
+<h2 class="anchored" data-anchor-id="d8-方式拡散入射8-受光">2.1 d/8° 方式（拡散入射・8° 受光）</h2>
+<p>照明工学における標準的な測定構成です。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>要素</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>d</strong> (diffuse)</td>
+<td>積分球内で光を拡散させ、試料へ全方向から均一照射</td>
+</tr>
+<tr class="even">
+<td><strong>8°</strong></td>
+<td>検出器を試料面法線から8°の位置に配置</td>
+</tr>
+</tbody>
+</table>
+<div id="cell-fig-d8-geometry" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-d8-geometry" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-d8-geometry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-d8-geometry-output-1.png" width="566" height="566" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-d8-geometry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: d/8° 測定幾何学
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>なぜ8°なのか？
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>8°配置により、試料表面の<strong>正反射成分（ハイライト）を直接測定しない</strong>構成になります。これにより、光沢の影響を制御した測定が可能です。</p>
+</div>
+</div>
+</section>
+<section id="正反射成分specular-componentの扱い" class="level2">
+<h2 class="anchored" data-anchor-id="正反射成分specular-componentの扱い">2.2 正反射成分（Specular Component）の扱い</h2>
+<p>測定モードには2種類あります：</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">SCI（Specular Component Included）</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">SCE（Specular Component Excluded）</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p><strong>正反射を含む測定</strong></p>
+<ul>
+<li>光沢によるハイライトも含めて測定</li>
+<li>材料の「見た目」の光沢を評価</li>
+<li>視覚評価に近い値</li>
+</ul>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p><strong>正反射を除外した測定</strong></p>
+<ul>
+<li>光沢成分をシャッターで遮蔽</li>
+<li>表面の純粋な拡散反射率のみ測定</li>
+<li><strong>照明計算・環境評価の標準</strong></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>照明工学における推奨
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>室内光環境の照度計算やグレア評価では、<strong>SCE値が標準</strong>として使用されます。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="測定手順" class="level1">
+<h1>3. 測定手順</h1>
+<div id="cell-fig-measurement-flow" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-measurement-flow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-measurement-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-measurement-flow-output-1.png" width="758" height="758" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-measurement-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: 測定フローチャート
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="step-1標準白板測定" class="level2">
+<h2 class="anchored" data-anchor-id="step-1標準白板測定">3.1 Step 1：標準白板測定</h2>
+<p>Spectralon（反射率 ≈ 0.99）などの標準白板を測定し、測定系の基準とします。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>標準白板の役割
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>積分球・分光器の計測系の「癖」を補正</li>
+<li>光源スペクトルの不均一性を補正</li>
+<li>球内の幾何学的不均一を補正</li>
+</ul>
+<p><strong>例：</strong> 白板（真値 0.99）が「0.97」と測定された場合 → 測定系が3%暗めに出ることを把握</p>
+</div>
+</div>
+</section>
+<section id="step-2試料測定" class="level2">
+<h2 class="anchored" data-anchor-id="step-2試料測定">3.2 Step 2：試料測定</h2>
+<p>標準白板と<strong>完全に同一条件</strong>で試料を測定します。</p>
+<ul>
+<li>同じ照射条件</li>
+<li>同じ配置位置</li>
+<li>同じ測定角度</li>
+<li>波長ごとの反射光強度を記録</li>
+</ul>
+</section>
+<section id="step-3白板値による正規化" class="level2">
+<h2 class="anchored" data-anchor-id="step-3白板値による正規化">3.3 Step 3：白板値による正規化</h2>
+<p>波長 <span class="math inline">\(\lambda\)</span> における反射率は次式で算出されます：</p>
+<p><span id="eq-reflectance"><span class="math display">\[
+\rho(\lambda) = \frac{L_{\text{sample}}(\lambda)}{L_{\text{white}}(\lambda)} \times \rho_{\text{white}}(\lambda)
+\tag{1}\]</span></span></p>
+<p>ここで：</p>
+<ul>
+<li><span class="math inline">\(L_{\text{sample}}(\lambda)\)</span>：試料の測定値</li>
+<li><span class="math inline">\(L_{\text{white}}(\lambda)\)</span>：白板の測定値<br>
+</li>
+<li><span class="math inline">\(\rho_{\text{white}}(\lambda)\)</span>：白板の既知の反射率</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>この正規化により、装置誤差・光源スペクトルのムラ・球内の不均一性が<strong>全て補正</strong>されます。</p>
+</div>
+</div>
+</section>
+<section id="step-4可視反射率への統合" class="level2">
+<h2 class="anchored" data-anchor-id="step-4可視反射率への統合">3.4 Step 4：可視反射率への統合</h2>
+<p>照明工学で使用する単一の反射率値は、視感度と光源スペクトルによる重み付き平均です：</p>
+<p><span id="eq-luminous-reflectance"><span class="math display">\[
+\rho_v = \frac{\int \rho(\lambda) \cdot V(\lambda) \cdot S(\lambda) \, d\lambda}{\int V(\lambda) \cdot S(\lambda) \, d\lambda}
+\tag{2}\]</span></span></p>
+<p>ここで：</p>
+<ul>
+<li><span class="math inline">\(V(\lambda)\)</span>：比視感度（人間の目の感度曲線）</li>
+<li><span class="math inline">\(S(\lambda)\)</span>：光源の分光分布（例：D65標準光）</li>
+</ul>
+<div id="cell-fig-spectral-curves" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="fig-spectral-curves" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-spectral-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-spectral-curves-output-1.png" width="1141" height="373" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spectral-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: 視感度曲線と標準光源スペクトル
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>この可視反射率 <span class="math inline">\(\rho_v\)</span> が、照明計算ソフト（DIALux、Radiance等）で使用される値です。</p>
+<hr>
+</section>
+</section>
+<section id="測定時の注意点" class="level1">
+<h1>4. 測定時の注意点</h1>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>精度に影響する要因
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>試料面の角度精度</strong>
+<ul>
+<li>1°のずれで測定誤差が増大</li>
+<li>特にSCE（光沢除去）モードでは致命的</li>
+</ul></li>
+<li><strong>局所的なテクスチャ・汚れ</strong>
+<ul>
+<li>壁紙などは表面が不均一</li>
+<li>複数点での平均測定が必須</li>
+</ul></li>
+<li><strong>外乱光の除去</strong>
+<ul>
+<li>環境光が入射すると入射光束の定義が崩壊</li>
+<li>完全な遮光が必要</li>
+</ul></li>
+<li><strong>測定口の密着性</strong>
+<ul>
+<li>積分球から光が漏れると全測定値が無効化</li>
+<li>壁面に対する平面密着領域の確保</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+<section id="まとめ積分球測定の優位性" class="level1">
+<h1>5. まとめ：積分球測定の優位性</h1>
+<p>積分球を用いた分光反射率測定が標準法とされる理由：</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>主要な利点
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>方向依存性の完全排除</strong> — 拡散面の真の反射率を測定</li>
+<li><strong>分光レベルの精度</strong> — 波長ごとの詳細な物性値取得</li>
+<li><strong>基準白板による補正</strong> — 装置誤差の系統的補正</li>
+<li><strong>国際標準準拠</strong> — JIS/CIE規格に基づく測定法</li>
+<li><strong>学術・実務両対応</strong> — 研究論文から実務計算まで通用</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>応用分野
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>建築照明設計における反射率データベース構築</li>
+<li>省エネルギー性能評価</li>
+<li>室内環境シミュレーション</li>
+<li>材料開発における光学特性評価</li>
+</ul>
+</div>
+</div>
+<hr>
+<section id="参考文献" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="参考文献">参考文献</h2>
+<ol type="1">
+<li>CIE 15:2018 — Colorimetry</li>
+<li>JIS Z 8722 — 色の測定方法</li>
+<li>ASTM E903 — Standard Test Method for Solar Absorptance, Reflectance, and Transmittance of Materials</li>
+</ol>
+<hr>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>次のステップ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>さらに詳細な情報が必要な場合：</p>
+<ul>
+<li>積分球の内部構造と球係数理論</li>
+<li>d/8° と 8/d 方式の詳細比較</li>
+<li>現場測定のための高精度手順書</li>
+<li>簡易測定法との精度比較</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

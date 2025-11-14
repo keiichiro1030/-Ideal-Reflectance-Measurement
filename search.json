@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "",
+    "text": "TipTL;DR\n\n\n\n積分球測定は、光を均一に拡散する球内で試料の反射光を総合的に測定する方式です。この方法により、壁や天井などの拡散面の反射率を方向性に依らず正確に測定できます。精度・再現性・安全性において最も信頼性の高い標準測定法です。"
+  },
+  {
+    "objectID": "index.html#はじめに",
+    "href": "index.html#はじめに",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "",
+    "text": "TipTL;DR\n\n\n\n積分球測定は、光を均一に拡散する球内で試料の反射光を総合的に測定する方式です。この方法により、壁や天井などの拡散面の反射率を方向性に依らず正確に測定できます。精度・再現性・安全性において最も信頼性の高い標準測定法です。"
+  },
+  {
+    "objectID": "index.html#なぜ積分球が必要なのか",
+    "href": "index.html#なぜ積分球が必要なのか",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "1.1 なぜ積分球が必要なのか",
+    "text": "1.1 なぜ積分球が必要なのか\n壁や天井のような拡散反射面は、入射光を全方向に散乱させます。この全方向反射光を正確に捕捉しない限り、真の反射率を求めることはできません。\n\n\n\n\n\n\nNote従来手法の課題\n\n\n\n\n通常のカメラやセンサーは特定方向からの測定に限定される\n測定角度により値が大きく変動する\n表面の微小な凹凸や光沢の影響を分離できない\n\n\n\n積分球は内面が高反射率コーティング（反射率 ≥ 0.95）で覆われており、内部で光を繰り返し反射させることで均一な光分布を実現します。\n\n\n\n\n\n\n\n\nFigure 1: 積分球の概念図\n\n\n\n\n\n\n\n\n\n\n\nImportant積分球の特性\n\n\n\n積分球内では、光源の入射方向、試料表面の光沢、微小な凹凸による散乱方向の違いが全て平均化されます。これにより方向に依存しない真の反射率が測定可能になります。"
+  },
+  {
+    "objectID": "index.html#d8-方式拡散入射8-受光",
+    "href": "index.html#d8-方式拡散入射8-受光",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "2.1 d/8° 方式（拡散入射・8° 受光）",
+    "text": "2.1 d/8° 方式（拡散入射・8° 受光）\n照明工学における標準的な測定構成です。\n\n\n\n要素\n説明\n\n\n\n\nd (diffuse)\n積分球内で光を拡散させ、試料へ全方向から均一照射\n\n\n8°\n検出器を試料面法線から8°の位置に配置\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: d/8° 測定幾何学\n\n\n\n\n\n\n\n\n\n\n\nTipなぜ8°なのか？\n\n\n\n8°配置により、試料表面の正反射成分（ハイライト）を直接測定しない構成になります。これにより、光沢の影響を制御した測定が可能です。"
+  },
+  {
+    "objectID": "index.html#正反射成分specular-componentの扱い",
+    "href": "index.html#正反射成分specular-componentの扱い",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "2.2 正反射成分（Specular Component）の扱い",
+    "text": "2.2 正反射成分（Specular Component）の扱い\n測定モードには2種類あります：\n\nSCI（Specular Component Included）SCE（Specular Component Excluded）\n\n\n正反射を含む測定\n\n光沢によるハイライトも含めて測定\n材料の「見た目」の光沢を評価\n視覚評価に近い値\n\n\n\n正反射を除外した測定\n\n光沢成分をシャッターで遮蔽\n表面の純粋な拡散反射率のみ測定\n照明計算・環境評価の標準\n\n\n\n\n\n\n\n\n\n\nImportant照明工学における推奨\n\n\n\n室内光環境の照度計算やグレア評価では、SCE値が標準として使用されます。"
+  },
+  {
+    "objectID": "index.html#step-1標準白板測定",
+    "href": "index.html#step-1標準白板測定",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "3.1 Step 1：標準白板測定",
+    "text": "3.1 Step 1：標準白板測定\nSpectralon（反射率 ≈ 0.99）などの標準白板を測定し、測定系の基準とします。\n\n\n\n\n\n\nNote標準白板の役割\n\n\n\n\n積分球・分光器の計測系の「癖」を補正\n光源スペクトルの不均一性を補正\n球内の幾何学的不均一を補正\n\n例： 白板（真値 0.99）が「0.97」と測定された場合 → 測定系が3%暗めに出ることを把握"
+  },
+  {
+    "objectID": "index.html#step-2試料測定",
+    "href": "index.html#step-2試料測定",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "3.2 Step 2：試料測定",
+    "text": "3.2 Step 2：試料測定\n標準白板と完全に同一条件で試料を測定します。\n\n同じ照射条件\n同じ配置位置\n同じ測定角度\n波長ごとの反射光強度を記録"
+  },
+  {
+    "objectID": "index.html#step-3白板値による正規化",
+    "href": "index.html#step-3白板値による正規化",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "3.3 Step 3：白板値による正規化",
+    "text": "3.3 Step 3：白板値による正規化\n波長 \\(\\lambda\\) における反射率は次式で算出されます：\n\\[\n\\rho(\\lambda) = \\frac{L_{\\text{sample}}(\\lambda)}{L_{\\text{white}}(\\lambda)} \\times \\rho_{\\text{white}}(\\lambda)\n\\tag{1}\\]\nここで：\n\n\\(L_{\\text{sample}}(\\lambda)\\)：試料の測定値\n\\(L_{\\text{white}}(\\lambda)\\)：白板の測定値\n\n\\(\\rho_{\\text{white}}(\\lambda)\\)：白板の既知の反射率\n\n\n\n\n\n\n\nImportant\n\n\n\nこの正規化により、装置誤差・光源スペクトルのムラ・球内の不均一性が全て補正されます。"
+  },
+  {
+    "objectID": "index.html#step-4可視反射率への統合",
+    "href": "index.html#step-4可視反射率への統合",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "3.4 Step 4：可視反射率への統合",
+    "text": "3.4 Step 4：可視反射率への統合\n照明工学で使用する単一の反射率値は、視感度と光源スペクトルによる重み付き平均です：\n\\[\n\\rho_v = \\frac{\\int \\rho(\\lambda) \\cdot V(\\lambda) \\cdot S(\\lambda) \\, d\\lambda}{\\int V(\\lambda) \\cdot S(\\lambda) \\, d\\lambda}\n\\tag{2}\\]\nここで：\n\n\\(V(\\lambda)\\)：比視感度（人間の目の感度曲線）\n\\(S(\\lambda)\\)：光源の分光分布（例：D65標準光）\n\n\n\n\n\n\n\n\n\nFigure 4: 視感度曲線と標準光源スペクトル\n\n\n\n\n\nこの可視反射率 \\(\\rho_v\\) が、照明計算ソフト（DIALux、Radiance等）で使用される値です。"
+  },
+  {
+    "objectID": "index.html#参考文献",
+    "href": "index.html#参考文献",
+    "title": "積分球を用いた分光反射率測定",
+    "section": "参考文献",
+    "text": "参考文献\n\nCIE 15:2018 — Colorimetry\nJIS Z 8722 — 色の測定方法\nASTM E903 — Standard Test Method for Solar Absorptance, Reflectance, and Transmittance of Materials\n\n\n\n\n\n\n\n\nTip次のステップ\n\n\n\nさらに詳細な情報が必要な場合：\n\n積分球の内部構造と球係数理論\nd/8° と 8/d 方式の詳細比較\n現場測定のための高精度手順書\n簡易測定法との精度比較"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]
