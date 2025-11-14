@@ -1,0 +1,436 @@
+---
+title: "積分球を用いた分光反射率測定"
+subtitle: "照明工学・室内環境評価のための標準測定法"
+author: ""
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    theme: cosmo
+    css: styles.css
+    fig-width: 8
+    fig-height: 6
+execute:
+  echo: false
+  warning: false
+jupyter: python3
+---
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, FancyArrowPatch, Rectangle, Wedge
+import matplotlib.patches as mpatches
+from mpl_toolkits.mplot3d import Axes3D
+
+# 日本語フォント設定
+plt.rcParams['font.sans-serif'] = ['DejaVu Sans']
+plt.rcParams['axes.unicode_minus'] = False
+```
+
+## はじめに {.unnumbered}
+
+:::{.callout-tip icon=false}
+## TL;DR
+
+積分球測定は、光を均一に拡散する球内で試料の反射光を総合的に測定する方式です。この方法により、壁や天井などの拡散面の反射率を**方向性に依らず正確に測定**できます。精度・再現性・安全性において最も信頼性の高い標準測定法です。
+:::
+
+---
+
+# 1. 積分球（Integrating Sphere）の原理
+
+## 1.1 なぜ積分球が必要なのか
+
+壁や天井のような拡散反射面は、入射光を**全方向**に散乱させます。この全方向反射光を正確に捕捉しない限り、真の反射率を求めることはできません。
+
+:::{.callout-note}
+### 従来手法の課題
+- 通常のカメラやセンサーは特定方向からの測定に限定される
+- 測定角度により値が大きく変動する
+- 表面の微小な凹凸や光沢の影響を分離できない
+:::
+
+積分球は内面が高反射率コーティング（反射率 ≥ 0.95）で覆われており、内部で光を繰り返し反射させることで**均一な光分布**を実現します。
+
+```{python}
+#| label: fig-integrating-sphere
+#| fig-cap: "積分球の概念図"
+
+fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+
+# 積分球
+sphere = Circle((0.5, 0.5), 0.35, fill=False, edgecolor='black', linewidth=2)
+ax.add_patch(sphere)
+
+# 内面の反射を表現
+for angle in np.linspace(0, 360, 12, endpoint=False):
+    rad = np.radians(angle)
+    x = 0.5 + 0.35 * np.cos(rad)
+    y = 0.5 + 0.35 * np.sin(rad)
+    ax.plot([x, 0.5 + 0.30 * np.cos(rad)], 
+            [y, 0.5 + 0.30 * np.sin(rad)], 
+            'lightgray', linewidth=1, alpha=0.5)
+
+# 入射光
+arrow1 = FancyArrowPatch((0.05, 0.5), (0.15, 0.5),
+                        arrowstyle='->', mutation_scale=20, 
+                        linewidth=2, color='orange')
+ax.add_patch(arrow1)
+ax.text(0.02, 0.52, 'Incident Light', fontsize=10, color='orange')
+
+# 試料
+sample = Rectangle((0.13, 0.45), 0.04, 0.10, 
+                   facecolor='lightblue', edgecolor='black', linewidth=1.5)
+ax.add_patch(sample)
+ax.text(0.15, 0.40, 'Sample', ha='center', fontsize=9)
+
+# 多重反射を表現する矢印
+reflection_angles = [30, 60, 120, 150, 210, 240, 300, 330]
+for angle in reflection_angles:
+    rad = np.radians(angle)
+    start_x = 0.15 + 0.05 * np.cos(rad)
+    start_y = 0.50 + 0.05 * np.sin(rad)
+    end_x = 0.15 + 0.15 * np.cos(rad)
+    end_y = 0.50 + 0.15 * np.sin(rad)
+    arrow = FancyArrowPatch((start_x, start_y), (end_x, end_y),
+                           arrowstyle='->', mutation_scale=15, 
+                           linewidth=1.5, color='gold', alpha=0.6)
+    ax.add_patch(arrow)
+
+# 検出器
+detector = Rectangle((0.75, 0.48), 0.08, 0.04, 
+                     facecolor='red', edgecolor='black', linewidth=1.5)
+ax.add_patch(detector)
+ax.text(0.79, 0.44, 'Detector', ha='center', fontsize=9)
+
+# 検出光路
+arrow2 = FancyArrowPatch((0.65, 0.5), (0.75, 0.5),
+                        arrowstyle='->', mutation_scale=20, 
+                        linewidth=2, color='red', alpha=0.7)
+ax.add_patch(arrow2)
+
+# タイトルと説明
+ax.text(0.5, 0.92, 'Integrating Sphere Measurement Principle', 
+        ha='center', fontsize=12, fontweight='bold')
+
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+ax.axis('off')
+ax.set_aspect('equal')
+
+plt.tight_layout()
+plt.show()
+```
+
+:::{.callout-important}
+### 積分球の特性
+積分球内では、光源の入射方向、試料表面の光沢、微小な凹凸による散乱方向の違いが全て**平均化**されます。これにより**方向に依存しない真の反射率**が測定可能になります。
+:::
+
+---
+
+# 2. 測定構成と方式
+
+## 2.1 d/8° 方式（拡散入射・8° 受光）
+
+照明工学における標準的な測定構成です。
+
+| 要素 | 説明 |
+|------|------|
+| **d** (diffuse) | 積分球内で光を拡散させ、試料へ全方向から均一照射 |
+| **8°** | 検出器を試料面法線から8°の位置に配置 |
+
+```{python}
+#| label: fig-d8-geometry
+#| fig-cap: "d/8° 測定幾何学"
+
+fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+
+# 試料面
+sample_line = plt.Line2D([0.2, 0.8], [0.3, 0.3], linewidth=3, color='brown')
+ax.add_line(sample_line)
+ax.text(0.5, 0.25, 'Sample Surface', ha='center', fontsize=11, fontweight='bold')
+
+# 法線
+normal = FancyArrowPatch((0.5, 0.3), (0.5, 0.7),
+                        arrowstyle='->', mutation_scale=20, 
+                        linewidth=2, color='black', linestyle='--')
+ax.add_patch(normal)
+ax.text(0.52, 0.72, 'Normal', fontsize=10)
+
+# 拡散入射光（複数方向から）
+incident_angles = [-60, -40, -20, 0, 20, 40, 60]
+for angle in incident_angles:
+    rad = np.radians(angle)
+    start_x = 0.5 - 0.25 * np.sin(rad)
+    start_y = 0.3 + 0.25 * np.cos(rad)
+    arrow = FancyArrowPatch((start_x, start_y), (0.5, 0.3),
+                           arrowstyle='->', mutation_scale=15, 
+                           linewidth=1.5, color='orange', alpha=0.7)
+    ax.add_patch(arrow)
+
+ax.text(0.3, 0.65, 'Diffuse\nIllumination', ha='center', fontsize=10, color='orange')
+
+# 8°検出方向
+detection_angle = 8
+rad = np.radians(detection_angle)
+det_x = 0.5 + 0.30 * np.sin(rad)
+det_y = 0.3 + 0.30 * np.cos(rad)
+
+arrow_det = FancyArrowPatch((0.5, 0.3), (det_x, det_y),
+                           arrowstyle='->', mutation_scale=20, 
+                           linewidth=3, color='red')
+ax.add_patch(arrow_det)
+ax.text(det_x + 0.05, det_y, '8° Detection', fontsize=11, color='red', fontweight='bold')
+
+# 角度表示
+arc = Wedge((0.5, 0.3), 0.15, 90 - detection_angle, 90, 
+            facecolor='none', edgecolor='blue', linewidth=1.5, linestyle='--')
+ax.add_patch(arc)
+ax.text(0.48, 0.42, '8°', fontsize=10, color='blue')
+
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+ax.axis('off')
+ax.set_aspect('equal')
+
+plt.tight_layout()
+plt.show()
+```
+
+:::{.callout-tip}
+### なぜ8°なのか？
+8°配置により、試料表面の**正反射成分（ハイライト）を直接測定しない**構成になります。これにより、光沢の影響を制御した測定が可能です。
+:::
+
+## 2.2 正反射成分（Specular Component）の扱い
+
+測定モードには2種類あります：
+
+:::{.panel-tabset}
+
+### SCI（Specular Component Included）
+
+**正反射を含む測定**
+
+- 光沢によるハイライトも含めて測定
+- 材料の「見た目」の光沢を評価
+- 視覚評価に近い値
+
+### SCE（Specular Component Excluded）
+
+**正反射を除外した測定**
+
+- 光沢成分をシャッターで遮蔽
+- 表面の純粋な拡散反射率のみ測定
+- **照明計算・環境評価の標準**
+
+:::
+
+:::{.callout-important}
+### 照明工学における推奨
+室内光環境の照度計算やグレア評価では、**SCE値が標準**として使用されます。
+:::
+
+---
+
+# 3. 測定手順
+
+```{python}
+#| label: fig-measurement-flow
+#| fig-cap: "測定フローチャート"
+
+fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+
+# ステップボックスの定義
+steps = [
+    {"y": 0.85, "text": "Step 1\n標準白板測定", "color": "lightblue"},
+    {"y": 0.65, "text": "Step 2\n試料測定", "color": "lightgreen"},
+    {"y": 0.45, "text": "Step 3\n白板値で正規化", "color": "lightyellow"},
+    {"y": 0.25, "text": "Step 4\n可視反射率算出", "color": "lightcoral"}
+]
+
+for i, step in enumerate(steps):
+    rect = Rectangle((0.2, step["y"] - 0.07), 0.6, 0.12, 
+                     facecolor=step["color"], edgecolor='black', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(0.5, step["y"], step["text"], ha='center', va='center', 
+            fontsize=11, fontweight='bold')
+    
+    if i < len(steps) - 1:
+        arrow = FancyArrowPatch((0.5, step["y"] - 0.07), 
+                               (0.5, steps[i+1]["y"] + 0.05),
+                               arrowstyle='->', mutation_scale=25, 
+                               linewidth=2.5, color='black')
+        ax.add_patch(arrow)
+
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+ax.axis('off')
+ax.set_aspect('equal')
+
+plt.tight_layout()
+plt.show()
+```
+
+## 3.1 Step 1：標準白板測定
+
+Spectralon（反射率 ≈ 0.99）などの標準白板を測定し、測定系の基準とします。
+
+:::{.callout-note}
+### 標準白板の役割
+- 積分球・分光器の計測系の「癖」を補正
+- 光源スペクトルの不均一性を補正
+- 球内の幾何学的不均一を補正
+
+**例：** 白板（真値 0.99）が「0.97」と測定された場合 → 測定系が3%暗めに出ることを把握
+:::
+
+## 3.2 Step 2：試料測定
+
+標準白板と**完全に同一条件**で試料を測定します。
+
+- 同じ照射条件
+- 同じ配置位置
+- 同じ測定角度
+- 波長ごとの反射光強度を記録
+
+## 3.3 Step 3：白板値による正規化
+
+波長 $\lambda$ における反射率は次式で算出されます：
+
+$$
+\rho(\lambda) = \frac{L_{\text{sample}}(\lambda)}{L_{\text{white}}(\lambda)} \times \rho_{\text{white}}(\lambda)
+$$ {#eq-reflectance}
+
+ここで：
+
+- $L_{\text{sample}}(\lambda)$：試料の測定値
+- $L_{\text{white}}(\lambda)$：白板の測定値  
+- $\rho_{\text{white}}(\lambda)$：白板の既知の反射率
+
+:::{.callout-important}
+この正規化により、装置誤差・光源スペクトルのムラ・球内の不均一性が**全て補正**されます。
+:::
+
+## 3.4 Step 4：可視反射率への統合
+
+照明工学で使用する単一の反射率値は、視感度と光源スペクトルによる重み付き平均です：
+
+$$
+\rho_v = \frac{\int \rho(\lambda) \cdot V(\lambda) \cdot S(\lambda) \, d\lambda}{\int V(\lambda) \cdot S(\lambda) \, d\lambda}
+$$ {#eq-luminous-reflectance}
+
+ここで：
+
+- $V(\lambda)$：比視感度（人間の目の感度曲線）
+- $S(\lambda)$：光源の分光分布（例：D65標準光）
+
+```{python}
+#| label: fig-spectral-curves
+#| fig-cap: "視感度曲線と標準光源スペクトル"
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+
+# 視感度曲線（V(λ)）
+wavelengths = np.linspace(380, 780, 100)
+# CIE 1931 視感度の近似
+v_lambda = np.exp(-((wavelengths - 555) / 80)**2)
+
+ax1.plot(wavelengths, v_lambda, 'b-', linewidth=2.5)
+ax1.fill_between(wavelengths, v_lambda, alpha=0.3)
+ax1.set_xlabel('Wavelength (nm)', fontsize=11)
+ax1.set_ylabel('Photopic Luminosity Function V(λ)', fontsize=11)
+ax1.set_title('CIE 1931 Standard Observer', fontsize=12, fontweight='bold')
+ax1.grid(True, alpha=0.3)
+ax1.set_xlim(380, 780)
+
+# D65標準光源（近似）
+d65 = 50 + 30 * np.exp(-((wavelengths - 500) / 150)**2) + \
+      10 * np.sin((wavelengths - 380) / 50)
+
+ax2.plot(wavelengths, d65, 'orange', linewidth=2.5)
+ax2.fill_between(wavelengths, d65, alpha=0.3, color='orange')
+ax2.set_xlabel('Wavelength (nm)', fontsize=11)
+ax2.set_ylabel('Relative Spectral Power Distribution', fontsize=11)
+ax2.set_title('D65 Standard Illuminant (Approximation)', fontsize=12, fontweight='bold')
+ax2.grid(True, alpha=0.3)
+ax2.set_xlim(380, 780)
+
+plt.tight_layout()
+plt.show()
+```
+
+この可視反射率 $\rho_v$ が、照明計算ソフト（DIALux、Radiance等）で使用される値です。
+
+---
+
+# 4. 測定時の注意点
+
+:::{.callout-warning}
+### 精度に影響する要因
+
+1. **試料面の角度精度**
+   - 1°のずれで測定誤差が増大
+   - 特にSCE（光沢除去）モードでは致命的
+
+2. **局所的なテクスチャ・汚れ**
+   - 壁紙などは表面が不均一
+   - 複数点での平均測定が必須
+
+3. **外乱光の除去**
+   - 環境光が入射すると入射光束の定義が崩壊
+   - 完全な遮光が必要
+
+4. **測定口の密着性**
+   - 積分球から光が漏れると全測定値が無効化
+   - 壁面に対する平面密着領域の確保
+:::
+
+---
+
+# 5. まとめ：積分球測定の優位性
+
+積分球を用いた分光反射率測定が標準法とされる理由：
+
+:::{.callout-tip icon=true}
+### 主要な利点
+
+1. **方向依存性の完全排除** — 拡散面の真の反射率を測定
+2. **分光レベルの精度** — 波長ごとの詳細な物性値取得
+3. **基準白板による補正** — 装置誤差の系統的補正
+4. **国際標準準拠** — JIS/CIE規格に基づく測定法
+5. **学術・実務両対応** — 研究論文から実務計算まで通用
+:::
+
+:::{.callout-note}
+### 応用分野
+- 建築照明設計における反射率データベース構築
+- 省エネルギー性能評価
+- 室内環境シミュレーション
+- 材料開発における光学特性評価
+:::
+
+---
+
+## 参考文献 {.unnumbered}
+
+1. CIE 15:2018 — Colorimetry
+2. JIS Z 8722 — 色の測定方法
+3. ASTM E903 — Standard Test Method for Solar Absorptance, Reflectance, and Transmittance of Materials
+
+---
+
+:::{.callout-tip appearance="minimal"}
+### 次のステップ
+
+さらに詳細な情報が必要な場合：
+
+- 積分球の内部構造と球係数理論
+- d/8° と 8/d 方式の詳細比較
+- 現場測定のための高精度手順書
+- 簡易測定法との精度比較
+:::
